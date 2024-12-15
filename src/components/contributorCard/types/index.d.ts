@@ -1,0 +1,1 @@
+declare module "*.module.scss" // permet à l'IDE de détecter, avec TS, les fichiers ".module.scss" lors des imports
