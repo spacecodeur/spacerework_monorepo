@@ -17,7 +17,7 @@ export default function IndexPage(): JSX.Element {
 						github: "https://github.com/spacecodeur"
 					}
 				} />
-			<ContributorCard picture={''} pseudo={'hasefury'} email={''} />
+			<ContributorCard picture={''} pseudo={'hazefury'} email={''} />
 		</>
 	)
 }
