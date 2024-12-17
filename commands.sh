@@ -19,11 +19,13 @@ show_help() {
     done
 }
 
-# Fonction pour l'autocomplétion
-_commands_autocomplete() {
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-    local commands=$(find "$COMMANDS_DIR" -name "*.sh" -exec basename {} .sh \;)
-    COMPREPLY=($(compgen -W "$commands" -- "$cur"))
+# Fonction pour vérifier si le script s'exécute dans un conteneur Docker
+is_running_in_docker() {
+  if grep -qE '/docker|/lxc' /proc/1/cgroup 2>/dev/null; then
+    return 0 # Vrai, dans un conteneur Docker
+  else
+    return 1 # Faux, sur la machine hôte
+  fi
 }
 
 # Détection si le script est sourcé ou exécuté
@@ -31,19 +33,6 @@ if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
     # Activer l'autocomplétion uniquement si sourcé
     complete -F _commands_autocomplete ./commands.sh
 else
-    # Si exécuté directement, rappeler de sourcer pour l'autocomplétion
-    if [[ $1 == "--setup" ]]; then
-        echo "Ajout automatique de source dans ~/.bashrc"
-        SCRIPT_PATH=$(realpath "$0")
-        if ! grep -q "source $SCRIPT_PATH" ~/.bashrc; then
-            echo "source $SCRIPT_PATH" >> ~/.bashrc
-            echo "Le script a été ajouté à ~/.bashrc. Veuillez exécuter : source ~/.bashrc"
-        else
-            echo "Le script est déjà présent dans ~/.bashrc"
-        fi
-        exit 0
-    fi
-
     # Gestion des arguments
     if [[ $# -eq 0 ]]; then
         show_help
@@ -53,12 +42,21 @@ else
     COMMAND=$1
     COMMAND_FILE="$COMMANDS_DIR/$COMMAND.sh"
 
-    # Vérification et exécution de la commande avec les paramètres à partir du 2e argument
-    if [[ -f "$COMMAND_FILE" ]]; then
-        bash "$COMMAND_FILE" "${@:2}"  # On passe tous les paramètres sauf le premier (commande)
-    else
+    # Vérification si le fichier de commande existe
+    if [[ ! -f "$COMMAND_FILE" ]]; then
         echo "Commande inconnue : $COMMAND"
         show_help
         exit 1
     fi
+
+    # Vérification si la commande doit être exécutée seulement depuis le container du projet
+    if [[ "$COMMAND" == fc-* ]]; then
+        if ! is_running_in_docker; then
+            echo "Erreur : La commande '$COMMAND' doit être exécutée depuis le conteneur Docker du projet."
+            exit 1
+        fi
+    fi
+
+    # Exécuter la commande avec les paramètres à partir du 2e argument
+    bash "$COMMAND_FILE" "${@:2}"
 fi
