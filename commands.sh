@@ -21,7 +21,7 @@ show_help() {
 
 # Fonction pour vérifier si le script s'exécute dans un conteneur Docker
 is_running_in_docker() {
-  if grep -qE '/docker|/lxc' /proc/1/cgroup 2>/dev/null; then
+  if [[ -f "/.dockerenv" ]]; then
     return 0 # Vrai, dans un conteneur Docker
   else
     return 1 # Faux, sur la machine hôte
@@ -50,13 +50,10 @@ else
     fi
 
     # Vérification si la commande doit être exécutée seulement depuis le container du projet
-    if [[ "$COMMAND" == fc-* ]]; then
-        if ! is_running_in_docker; then
-            echo "Erreur : La commande '$COMMAND' doit être exécutée depuis le conteneur Docker du projet."
-            exit 1
-        fi
+    if [[ "$COMMAND" == fc-* ]] && ! is_running_in_docker; then
+        docker exec --workdir /app spacerework-container ./commands.sh $COMMAND  
+    else
+        # Exécuter la commande avec les paramètres à partir du 2e argument
+        bash "$COMMAND_FILE" "${@:2}"
     fi
-
-    # Exécuter la commande avec les paramètres à partir du 2e argument
-    bash "$COMMAND_FILE" "${@:2}"
 fi
