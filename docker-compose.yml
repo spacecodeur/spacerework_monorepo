@@ -2,14 +2,14 @@ services:
   front:
     container_name: spacerework-container
     build:
-      context: . # Chemin du répertoire où se trouve le Dockerfile
+      context: . # Path to the directory where the Dockerfile is located
       dockerfile: Dockerfile
     image: spacerework-image
     ports:
       - "3000:3000"
     volumes:
-      # Les volumes sont montés lors du démarrage du conteneur
-      # mais avant les commandes CMD / ENTRYPOINT
+      # Volumes are mounted when the container starts
+      # but before the CMD / ENTRYPOINT commands
       - ./src:/app/src
       # - ./tests:/app/tests
     tty: true
