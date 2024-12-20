@@ -14,8 +14,7 @@ RUN apt install libssl-dev -y
 
 WORKDIR /app
 
-RUN ["cargo", "install", "cargo-binstall"]
-RUN ["cargo", "binstall", "tuono"]
+RUN ["cargo", "install", "tuono"]
 
 FROM debian:bookworm
 
@@ -25,7 +24,3 @@ COPY --from=tuono-builder /usr/local/cargo/bin/tuono /usr/local/bin/tuono
 COPY --from=nodemodules-builder /app/node_modules /app/node_modules
 COPY . /app/
 RUN apt install libssl-dev -y
-# RUN ["tuono", "dev"]  # démarre les serveur front et back de dev, je commente pour le moment car cette ligne provoque une erreur (sans doute parce que nodejs n'est pas installé)commenté pour debug (provoque une erreur)
-
-# ENTRYPOINT tail -f /dev/null
-# ENTRYPOINT ["./target/debug/tuono"] # commenté pour debug
