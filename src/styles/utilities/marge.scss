@@ -1,0 +1,23 @@
+@use "./breakpoint.scss";
+@use "../settings/values.scss";
+
+@include breakpoint.wrapInResponsive() using ($prefix) {
+  @each $sizeKey,$sizeVal in values.$sizes {
+    .#{$prefix}m-#{$sizeKey} {
+      margin: #{$sizeVal};
+    }
+    
+    .#{$prefix}p-#{$sizeKey} {
+      padding: #{$sizeVal};
+    }
+
+    @each $d,$direction in values.$directions {
+      .#{$prefix}m#{$d}-#{$sizeKey} {
+        margin-#{$direction}: #{$sizeVal};
+      }
+      .#{$prefix}p#{$d}-#{$sizeKey} {
+        padding-#{$direction}: #{$sizeVal};
+      }
+    }
+  }
+}

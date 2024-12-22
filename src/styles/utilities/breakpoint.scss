@@ -1,0 +1,21 @@
+@use "../settings/values.scss";
+
+@mixin wrapInResponsive() {
+    @each $bpKey,$bpVal in values.$breakpoints {
+        $prefix: "";
+        @if $bpKey != "global" {
+          $prefix: #{$bpKey}-;
+        }@else {
+          $prefix: "";
+        }
+        
+        @if $bpKey != "global"{
+            @media (min-width: $bpVal) {
+                @content($prefix);
+            }
+        } @else {
+            @content($prefix);
+        }
+
+    }
+}

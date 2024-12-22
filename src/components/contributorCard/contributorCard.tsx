@@ -11,7 +11,7 @@ export default function ContributorCard({picture, pseudo, email, networks}: cont
             
             {networks !== undefined &&
                 <section>
-                    <h4>Mes réseaux</h4>
+                    <h4 className="xl-mb-5 mb-0">Mes réseaux</h4>
                     <ul>
                         {
                             Object.entries(networks).map(([networkName, networkUrl], index) =>

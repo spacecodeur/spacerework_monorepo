@@ -1,0 +1,31 @@
+$spacer:1;
+
+$sizes:(
+  0: 0,
+  1: ($spacer * 0.25rem),
+  2: ($spacer * 0.50rem),
+  3: ($spacer * 1rem),
+  4: ($spacer * 2rem),
+  5: ($spacer * 3rem),
+);
+
+$breakpoints:(
+  "global": "",
+  "md": "768px",
+  "xl": "1200px"
+);
+
+$colors:(
+  "red": #eb1a1d,
+  "green": #008d45,
+  "yellow": #fece15,
+  "orange": #ffa500,
+  "blue": #0749b4,
+  "pink": #ffc0cb,
+  "black": #000000,
+  "grey": #808080,
+  "lightgrey": #d5d5d5,
+  "white": #ffffff
+);
+
+$directions:("t":"top","s":"right","b":"bottom","e":"left");
