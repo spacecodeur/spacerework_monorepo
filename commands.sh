@@ -1,39 +1,51 @@
 #!/bin/bash
 
-# Dossier contenant les scripts de commandes
 COMMANDS_DIR="./commands"
 
-# Vérifie si le dossier des commandes existe
 if [[ ! -d "$COMMANDS_DIR" ]]; then
     echo "Erreur : Le dossier $COMMANDS_DIR n'existe pas."
     exit 1
 fi
 
-# Fonction pour afficher l'aide
 show_help() {
-    echo "Usage: $0 <commande>"
-    echo "Commandes disponibles :"
+    echo "Usage: \`$0 <commande>\`"
+    echo "Commandes disponibles : ( fc-* = from (docker) container )"
     for cmd_file in "$COMMANDS_DIR"/*.sh; do
         cmd_name=$(basename "$cmd_file" .sh)
         echo "  $cmd_name"
     done
+    echo "Activer l'autocomplétion : \`$0 --setup\`"
 }
 
-# Fonction pour vérifier si le script s'exécute dans un conteneur Docker
 is_running_in_docker() {
   if [[ -f "/.dockerenv" ]]; then
-    return 0 # Vrai, dans un conteneur Docker
+    return 0
   else
-    return 1 # Faux, sur la machine hôte
+    return 1
   fi
 }
 
-# Détection si le script est sourcé ou exécuté
+_commands_autocomplete() {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local commands=$(find "$COMMANDS_DIR" -name "*.sh" -exec basename {} .sh \;)
+    COMPREPLY=($(compgen -W "$commands" -- "$cur"))
+}
+
 if [[ "$0" != "${BASH_SOURCE[0]}" ]]; then
-    # Activer l'autocomplétion uniquement si sourcé
     complete -F _commands_autocomplete ./commands.sh
 else
-    # Gestion des arguments
+    if [[ $1 == "--setup" ]]; then
+        SCRIPT_PATH=$(realpath "$0")
+        if ! grep -q "source $SCRIPT_PATH" ~/.bashrc; then
+            echo "source $SCRIPT_PATH" >> ~/.bashrc
+            echo "Le script a été ajouté à ~/.bashrc"
+        else
+            echo "Le script est déjà présent dans ~/.bashrc"
+        fi
+        echo "Penser à exécuter \`source ~/.bashrc\` ! "
+        exit 0
+    fi
+
     if [[ $# -eq 0 ]]; then
         show_help
         exit 1
@@ -49,7 +61,6 @@ else
         exit 1
     fi
 
-    # Vérification si la commande doit être exécutée seulement depuis le container du projet
     if [[ "$COMMAND" == fc-* ]] && ! is_running_in_docker; then
         docker exec --workdir /app spacerework-container ./commands.sh $COMMAND  
     else
