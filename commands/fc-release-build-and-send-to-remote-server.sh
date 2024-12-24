@@ -1,37 +1,34 @@
 #!/bin/bash
 
-# Fonction pour afficher l'aide
 show_help() {
-    echo "Usage: $0 <nom_utilisateur> <adresse_ip> [chemin_vers_la_clé_ssh]"
-    echo "  nom_utilisateur    : Nom d'utilisateur sur le serveur distant"
-    echo "  adresse_ip         : Adresse IP du serveur distant (doit être valide)"
-    echo "  chemin_vers_la_clé_ssh : (optionnel) Chemin vers la clé SSH privée (.pem)"
-    echo "  Si la clé SSH n'est pas spécifiée, la commande utilisera la méthode classique de connexion SSH."
+    echo "Usage: $0 <username> <ip_address> [path_to_ssh_key]"
+    echo "  username           : Username on the remote server"
+    echo "  ip_address         : IP address of the remote server (must be valid)"
+    echo "  path_to_ssh_key    : (optional) Path to the private SSH key (.pem)"
+    echo "  If the SSH key is not specified, the command will use the standard SSH connection method."
 }
 
-# Vérification du nombre de paramètres
 if [[ $# -lt 2 ]]; then
-    echo "Erreur : Deux paramètres obligatoires sont manquants."
+    echo "Error: Two required parameters are missing."
     show_help
     exit 1
 fi
 
-# Récupération des paramètres
 USER=$1
 SERVER=$2
 KEY_PATH=$3
 
-# Vérification de l'adresse IP (format IPv4)
+# Check if the IP address is valid (IPv4 format)
 if ! [[ "$SERVER" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "Erreur : L'adresse IP '$SERVER' n'est pas valide."
+    echo "Error: The IP address '$SERVER' is not valid."
     show_help
     exit 1
 fi
 
-# Si un chemin de clé est fourni, vérifier sa validité
+# If a key path is provided, validate its existence
 if [[ -n "$KEY_PATH" ]]; then
     if [[ ! -f "$KEY_PATH" ]]; then
-        echo "Erreur : Le fichier de clé SSH '$KEY_PATH' n'existe pas."
+        echo "Error: The SSH key file '$KEY_PATH' does not exist."
         show_help
         exit 1
     fi
@@ -40,64 +37,62 @@ else
     SSH_CMD="ssh $USER@$SERVER"
 fi
 
-# Compilation et création de l'archive
+# Compile and create the archive
 tuono build && \
 cargo build --release && \
 [ -f release.tar.gz ] && rm release.tar.gz
 tar -czf release.tar.gz ./out ./target/release/tuono ./target/release/tuono.d
 
-# Commande SCP pour copier l'archive sur le serveur distant
+# copy the archive to the remote server
 if [[ -n "$KEY_PATH" ]]; then
-    # Si une clé SSH est spécifiée
+    # If an SSH key is specified
     scp -i "$KEY_PATH" release.tar.gz "$USER@$SERVER:/home/$USER/"
 else
-    # Sinon, utiliser la méthode classique de connexion SSH
     scp release.tar.gz "$USER@$SERVER:/home/$USER/"
 fi
 
-# Vérification de l'échec de la commande SCP
+# Check if the SCP command failed
 if [[ $? -ne 0 ]]; then
-    echo "Erreur : Échec de la copie de l'archive sur le serveur distant."
+    echo "Error: Failed to copy the archive to the remote server."
     exit 1
 fi
 
-# Suppression de l'archive locale
 rm release.tar.gz
 
-# Commandes à exécuter sur le serveur distant
+# Commands to execute on the remote server
 
-# 1. Tuer le processus utilisant le port 3000 sur le serveur distant
+# 1. Kill the process using port 3000 on the remote server
 $SSH_CMD "lsof -t -i :3000 | xargs kill -9"
 
-# 2. Attendre que le port 3000 soit libéré (max 10 secondes)
-echo "Attente de la libération du port 3000..."
+# 2. Wait for port 3000 to be freed (max 10 seconds)
+echo "Waiting for port 3000 to be freed..."
 for i in {1..10}; do
     if ! $SSH_CMD "lsof -i :3000"; then
-        echo "Port 3000 libéré."
+        echo "Port 3000 freed."
         break
     fi
     if [ $i -eq 10 ]; then
-        echo "Erreur : Le port 3000 n'a pas pu être libéré après 10 secondes."
+        echo "Error: Port 3000 could not be freed after 10 seconds."
         exit 1
     fi
     sleep 1
 done
 
-# 3. Supprimer le dossier "release" s'il existe
+# 3. Remove the "release" directory if it exists
 $SSH_CMD "rm -rf /home/$USER/release"
 
-# 4. Créer un dossier "release" et y dézipper l'archive
+# 4. Create a "release" directory and extract the archive into it
 $SSH_CMD "mkdir -p /home/$USER/release"
 $SSH_CMD "tar -xzf /home/$USER/release.tar.gz -C /home/$USER/release"
 
-# 5. Supprimer l'archive sur le serveur distant après extraction
+# 5. Remove the archive on the remote server after extraction
 $SSH_CMD "rm /home/$USER/release.tar.gz"
 
-# 6. Exécuter le binaire "./target/release/tuono" en arrière-plan avec nohup
+# 6. Run the binary "./target/release/tuono" in the background using nohup
 $SSH_CMD "cd /home/$USER/release && bash -c './target/release/tuono > /home/$USER/release/tuono.log 2>&1 &' && exit"
 
-# Fermer la session SSH
+# Close the SSH session
 $SSH_CMD "exit"
 
-# Fin du script
-echo "Le serveur a été mis à jour avec succès et le processus a démarré."
+# End !
+echo "The server has been successfully updated and the process has started."
