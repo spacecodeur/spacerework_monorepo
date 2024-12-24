@@ -7,8 +7,10 @@ A CI/CD pipeline is set up via Jenkins, and the application is hosted through cl
 # Get started
 
 - Prerequisites:
-  - Install Docker
+  - clone this repo
+  - install Docker
 
 - Local setup:
-  - Build the Docker image: `./commands.sh docker-build`
-  - Start the development server: `./commands.sh server-start`
+  - build the Docker image: `./commands.sh docker-build`
+  - start the development server: `./commands.sh fc-server-start` (fc stand for "from (docker) container")
+  - et voilà !
