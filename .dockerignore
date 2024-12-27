@@ -1,7 +1,19 @@
-target
+# project
+.tuono
 node_modules
+out
+target
+
+# Git
 .git
 .gitignore
-README.md
-Dockerfile
+
+# Docker files
 docker-compose.yml
+Dockerfile
+.dockerignore
+
+# IDE files
+.vscode
+.idea
+*.iml
