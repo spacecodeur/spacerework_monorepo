@@ -2,7 +2,7 @@ services:
   front:
     container_name: spacerework-container
     build:
-      context: . # Path to the directory where the Dockerfile is located
+      context: ..
       dockerfile: Dockerfile
       args:
         RUST_VERSION: 1.83
@@ -17,5 +17,4 @@ services:
       - /app/target
       - /app/.tuono
     tty: true
-    # entrypoint.sh must be executable only in Docker container
     command: /app/entrypoint.sh
