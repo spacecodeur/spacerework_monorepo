@@ -4,12 +4,18 @@ services:
     build:
       context: . # Path to the directory where the Dockerfile is located
       dockerfile: Dockerfile
+      args:
+        RUST_VERSION: 1.83
+        BASE_OS: bookworm # Using Debian-bookworm instead of Alpine because V8 compilation fails due to a tricky bug: https://github.com/denoland/rusty_v8/issues/49
+        NODE_VERSION: 22.11.0
     image: spacerework-image
     ports:
       - "3000:3000"
-    volumes:
-      # Volumes are mounted when the container starts
-      # but before the CMD / ENTRYPOINT commands
-      - ./src:/app/src
-      # - ./tests:/app/tests
+    volumes: # mount the project into a volume : node_modules, target and .tuono directories will be empty in host-side
+      - .:/app
+      - /app/node_modules
+      - /app/target
+      - /app/.tuono
     tty: true
+    # entrypoint.sh must be executable only in Docker container
+    command: /app/entrypoint.sh

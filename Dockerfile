@@ -1,20 +1,32 @@
-## Using Debian instead of Alpine because V8 compilation fails due to a tricky bug: https://github.com/denoland/rusty_v8/issues/49
-FROM rust:bookworm
+# Use the specified Rust version and base OS as the base image
+ARG BASE_OS
+ARG RUST_VERSION
+FROM rust:${RUST_VERSION}-${BASE_OS}
 
 RUN ["apt", "update"]
 
-# Packages needed to later install Tuono
-RUN ["apt", "install", "pkg-config", "-y"]
+# Nodejs installation
+RUN ["mkdir", "/usr/local/nvm"]
+ENV NVM_DIR /usr/local/nvm
+
+RUN ["apt", "update"]
+RUN ["apt", "install", "curl", "-y", "--no-install-recommends"]
+
+RUN ["curl", "https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh", "-o", "/tmp/install_nvm.sh"]
+RUN ["bash", "/tmp/install_nvm.sh"]
+
+ARG NODE_VERSION
+RUN ["sh", "-c", ". /usr/local/nvm/nvm.sh && nvm install ${NODE_VERSION}"]
+
+# Ensure Node.js binaries are available in the PATH
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+# Install bin & packages
+
+## packages Needed to install Tuono
+RUN ["apt", "install", "pkg-config", "-y"] 
 RUN ["apt", "install", "libssl-dev", "-y"]
-
-# Installing Node.js
-RUN ["apt", "install", "nodejs", "-y"]
-RUN ["apt", "install", "npm", "-y"]
-
-WORKDIR /app
-
-# Remember to use a .dockerignore file to exclude unwanted files/directories
-COPY . /app/
+RUN ["cargo", "install", "tuono"]
 
 # # binstall allows downloading only binaries (avoiding time spent downloading and compiling from source)
 # RUN ["cargo", "install", "cargo-binstall"]
@@ -23,9 +35,10 @@ COPY . /app/
 # # cargo-nextest: improves the native `cargo test` by speeding up test execution
 # RUN ["cargo", "binstall", "cargo-nextest", "--secure", "--no-confirm"]
 # # cargo-mutants: allows running mutation tests
-# RUN ["cargo", "binstall", "cargo-mutants", "--secure", "--no-confirm"]
+# RUN ["cargo", "binstall", "cargo-mutants", "--secure", "--no-confirm"
 
-# No need to use binstall for Tuono: the time saved is negligible
-RUN ["cargo", "install", "tuono"]
+# Set the working directory to /app
+WORKDIR /app
 
-RUN ["npm", "install"]
+# Copy project files into the container (excepted files/dir declared in .dockerignore)
+COPY . .
