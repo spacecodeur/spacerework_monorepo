@@ -1,4 +1,4 @@
-# project
+<!-- # project
 .tuono
 node_modules
 out
@@ -9,11 +9,11 @@ target
 .gitignore
 
 # Docker files
-docker-compose.yml
-Dockerfile
-.dockerignore
+docker/docker-compose.yml
+docker/Dockerfile
+docker/.dockerignore
 
 # IDE files
 .vscode
 .idea
-*.iml
+*.iml -->
