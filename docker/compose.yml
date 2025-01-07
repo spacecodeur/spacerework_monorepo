@@ -1,6 +1,8 @@
 services:
-  front:
+  spacerework:
+    platform: linux/amd64
     container_name: spacerework-container
+    hostname: spacerework-container
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
@@ -8,13 +10,13 @@ services:
         RUST_VERSION: 1.83
         BASE_OS: bookworm # Using Debian-bookworm instead of Alpine because V8 compilation fails due to a tricky bug: https://github.com/denoland/rusty_v8/issues/49
         NODE_VERSION: 22.11.0
+        TUONO_VERSION: 0.16
     image: spacerework-image
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes: # mount the project into a volume but node_modules, target and .tuono directories will be empty in host-side
       - ..:/app
       - /app/node_modules
       - /app/target
       - /app/.tuono
     tty: true
-    command: /app/docker/entrypoint.sh  

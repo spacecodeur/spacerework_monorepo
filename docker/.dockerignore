@@ -4,16 +4,16 @@ node_modules
 out
 target
 
-# Git
+# git
 .git
 .gitignore
 
-# Docker files
+# docker
 docker/docker-compose.yml
 docker/Dockerfile
 docker/.dockerignore
 
-# IDE files
+# IDE
 .vscode
 .idea
 *.iml
