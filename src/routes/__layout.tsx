@@ -1,9 +1,15 @@
 import type { ReactNode, JSX } from 'react'
 
-interface RootRouteProps {
+interface RootLayoutProps {
   children: ReactNode
 }
 
-export default function RootRoute({ children }: RootRouteProps): JSX.Element {
-  return <main className="main">{children}</main>
+export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
+  return (
+    <html>
+      <body>
+        <main>{children}</main>
+      </body>
+    </html>
+  )
 }
