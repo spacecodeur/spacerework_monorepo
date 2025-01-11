@@ -82,7 +82,7 @@ else
 
     if [[ "$COMMAND" == fc-* ]] && ! is_running_in_docker; then
         # keep --tty and --interactive : if not, SIGINT (ctrl+c) won't be correctly pass from host to container
-        docker exec --tty --interactive --workdir /app spacerework-container ./commands.sh $COMMAND
+        docker exec --tty --interactive --workdir /app ${APP_NAME}-app-container ./commands.sh $COMMAND
     else
         # Execute the command with parameters starting from the second argument
         bash "$COMMAND_FILE" "${@:2}"
