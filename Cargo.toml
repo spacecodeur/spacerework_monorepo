@@ -10,4 +10,5 @@ path = ".tuono/main.rs"
 [dependencies]
 tuono_lib = "0.17.0"
 serde = { version = "1.0.202", features = ["derive"] }
+diesel = { version = "2.2.6", features = ["postgres"] }
 
