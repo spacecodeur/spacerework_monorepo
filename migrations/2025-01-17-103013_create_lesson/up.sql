@@ -5,7 +5,22 @@ CREATE TABLE lesson (
   content TEXT NOT NULL
 );
 
-INSERT INTO lesson(content)
+INSERT INTO Lesson(content)
 VALUES
-('cours sur nodejs \n Bonjour !'), 
-('un autre cours ! \n blablabla');
+('# coucou\n
+ça va ?\n
+{{{widget-inline "param1" "**param2**" " **param3** "}}}\n
+\{{{widget-inline "param1" "param2" "param3"\n
+{{{widget-multiline "param1" "param2" "param3"}}}\n
+content1\n
+<h2>titre deja présent</h2>\n
+<ul>\n
+<li>liste<li>\n
+</ul>\n
+<div># coucou ! **test** </div>\n
+\n
+content2\n
+\n
+content3\n
+widget-multilie}}}'),
+('# un autre cours ! \n blablabla');

@@ -8,12 +8,15 @@ if [[ ! -d "$COMMANDS_DIR" ]]; then
     exit 1
 fi
 
-if [[ ! -f "$ENV_FILE" ]]; then
-    echo "Erreur : le fichier $ENV_FILE est introuvable."
-    exit 1
+# Lire la valeur de APP_NAME depuis le fichier .env
+if [ -f "$ENV_FILE" ]; then
+  APP_NAME=$(grep '^APP_NAME=' "$ENV_FILE" | cut -d '=' -f 2)
+else
+  echo "Erreur : le fichier .env est introuvable."
+  exit 1
 fi
 
-export $(grep -v '^#' "$ENV_FILE" | xargs)
+export APP_NAME
 
 show_help() {
     echo "Usage: \`$0 <command>\`"
