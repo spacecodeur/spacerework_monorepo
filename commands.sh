@@ -1,11 +1,22 @@
 #!/bin/bash
 
 COMMANDS_DIR="./commands"
+ENV_FILE=".env"
 
 if [[ ! -d "$COMMANDS_DIR" ]]; then
     echo "Error: The directory $COMMANDS_DIR does not exist."
     exit 1
 fi
+
+# Lire la valeur de APP_NAME depuis le fichier .env
+if [ -f "$ENV_FILE" ]; then
+  APP_NAME=$(grep '^APP_NAME=' "$ENV_FILE" | cut -d '=' -f 2)
+else
+  echo "Erreur : le fichier .env est introuvable."
+  exit 1
+fi
+
+export APP_NAME
 
 show_help() {
     echo "Usage: \`$0 <command>\`"
@@ -63,7 +74,7 @@ else
 
     if [[ "$COMMAND" == fc-* ]] && ! is_running_in_docker; then
         # keep --tty and --interactive : if not, SIGINT (ctrl+c) won't be correctly pass from host to container
-        docker exec --tty --interactive --workdir /app spacerework-container ./commands.sh $COMMAND
+        docker exec --tty --interactive --workdir /app ${APP_NAME}-app-container ./commands.sh $COMMAND
     else
         # Execute the command with parameters starting from the second argument
         bash "$COMMAND_FILE" "${@:2}"
