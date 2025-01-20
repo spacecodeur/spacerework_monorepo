@@ -1,7 +1,17 @@
 import type { JSX } from 'react'
 import ContributorCard from '../components/contributorCard/contributorCard'
+import type { TuonoProps } from 'tuono'
 
-export default function IndexPage(): JSX.Element {
+
+export default function IndexPage({
+    data,
+    isLoading,
+}: TuonoProps<string>): JSX.Element {
+	if (isLoading) {
+        return <h1>Loading...</h1>
+    }
+
+
 	return (
 		<>
 		<h1>Homepage</h1>
@@ -17,6 +27,9 @@ export default function IndexPage(): JSX.Element {
 				}
 			} />
 		<ContributorCard picture={''} pseudo={'hazefury'} email={''} />
+		<div>
+			<p>{data}</p>
+		</div>
 		</>
 	)
 }
