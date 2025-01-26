@@ -1,0 +1,3 @@
+[alias]
+ut = "nextest run"
+utc = "llvm-cov nextest"

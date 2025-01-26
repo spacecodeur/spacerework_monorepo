@@ -24,12 +24,13 @@ ENV PATH /usr/local/node/bin:$PATH
 RUN ["cargo", "install", "cargo-binstall"]
 RUN ["cargo", "binstall", "diesel_cli", "--secure", "--no-confirm"]
 RUN ["cargo", "binstall", "wasm-pack", "--secure", "--no-confirm"]
-# # cargo-llvm-cov: generates test reports and code coverage
-# RUN ["cargo", "binstall", "cargo-llvm-cov", "--secure", "--no-confirm"]
-# # cargo-nextest: improves the native `cargo test` by speeding up test execution
-# RUN ["cargo", "binstall", "cargo-nextest", "--secure", "--no-confirm"]
-# # cargo-mutants: allows running mutation tests
-# RUN ["cargo", "binstall", "cargo-mutants", "--secure", "--no-confirm"
+
+# cargo-llvm-cov: generates test reports and code coverage
+RUN ["cargo", "binstall", "cargo-llvm-cov", "--secure", "--no-confirm"]
+# cargo-nextest: improves the native `cargo test` by speeding up test execution
+RUN ["cargo", "binstall", "cargo-nextest", "--secure", "--no-confirm"]
+# cargo-mutants: allows running mutation tests
+RUN ["cargo", "binstall", "cargo-mutants", "--secure", "--no-confirm"]
 
 # global configuration done ! let's focus on the project itself
 
