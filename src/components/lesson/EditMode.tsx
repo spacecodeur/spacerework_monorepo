@@ -7,16 +7,16 @@ export default function EditMode({path, lesson}): JSX.Element {
     const [lesson_html, setLesson_html] = useState<String|null>(null);
 
     useEffect(()=>{
-        init().then(()=>{
-            setLesson_html(md_to_html(lesson.content))
-        })
+        // init().then(()=>{
+        //     setLesson_html(md_to_html(lesson.content))
+        // })
     },[]);
 
     console.log(lesson);
     
     return (
         <>
-            <label>
+            {/* <label>
                 Éditeur : 
                 <textarea 
                     name="postContent" 
@@ -25,7 +25,7 @@ export default function EditMode({path, lesson}): JSX.Element {
                         setLesson_html(md_to_html(event.target.value));
                     }}
                 />
-            </label>
+            </label> */}
             <LessonView content={lesson_html}/>
         </>
     )

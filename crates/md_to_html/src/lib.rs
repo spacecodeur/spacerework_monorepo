@@ -27,13 +27,6 @@ pub fn md_to_html(content: &str) -> String {
     options.render.unsafe_ = true;
 
     let html2 : String = markdown_to_html(content, &options);
-    
-    println!("depart");
-    println!("{:?}", content);
-    println!("package markdown");
-    println!("{:?}", html);
-    println!("package comrak");
-    println!("{:?}", html2);
 
     format!("{}", html2)
 }
