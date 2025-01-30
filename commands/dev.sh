@@ -7,6 +7,7 @@
 wait
 
 ./commands.sh fc-app-migrate
+./commands.sh fc-app-wasm-build
 
 echo
 echo "All set!"
