@@ -12,6 +12,12 @@ export default function EditMode({path, lesson}): JSX.Element {
         // })
     },[]);
 
+    const save = () => {
+        fetch('/api/save').then((rep) => rep.json()).then((repjson)=>{
+            console.log(repjson);
+        })
+    }
+
     console.log(lesson);
     
     return (
@@ -26,7 +32,15 @@ export default function EditMode({path, lesson}): JSX.Element {
                     }}
                 />
             </label> */}
-            <LessonView content={lesson_html}/>
+            <textarea 
+                name="postContent" 
+                defaultValue={lesson.content}
+                onChange={(event)=>{
+                    setLesson_html(md_to_html(event.target.value));
+                }}
+            />
+            <button type="button" onClick={save}>SAVE</button>
+            {/* <LessonView content={lesson_html}/> */}
         </>
     )
 }
