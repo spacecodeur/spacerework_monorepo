@@ -13,3 +13,8 @@ serde = { version = "1.0.202", features = ["derive"] }
 diesel = { version = "2.2.6", features = ["postgres"] }
 dotenvy = "0.15.7"
 md_to_html = { path = "./crates/md_to_html" }
+regex = "1.11.1"
+
+[features]
+integration = []
+e2e = []

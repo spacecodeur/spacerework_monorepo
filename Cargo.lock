@@ -2399,6 +2399,7 @@ dependencies = [
  "diesel",
  "dotenvy",
  "md_to_html",
+ "regex",
  "serde",
  "tuono_lib",
 ]

@@ -32,13 +32,13 @@ export default function EditMode({path, lesson}): JSX.Element {
                     }}
                 />
             </label> */}
-            <textarea 
+            {/* <textarea 
                 name="postContent" 
                 defaultValue={lesson.content}
                 onChange={(event)=>{
                     setLesson_html(md_to_html(event.target.value));
                 }}
-            />
+            /> */}
             <button type="button" onClick={save}>SAVE</button>
             {/* <LessonView content={lesson_html}/> */}
         </>
