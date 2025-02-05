@@ -1,3 +1,3 @@
 -- This file should undo anything in `up.sql`
 
-DROP TABLE lesson;
+DROP TABLE path_segment;

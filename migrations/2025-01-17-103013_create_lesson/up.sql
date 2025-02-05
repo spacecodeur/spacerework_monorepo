@@ -5,7 +5,7 @@ CREATE TABLE lesson (
   content TEXT NOT NULL
 );
 
-INSERT INTO Lesson(content)
+INSERT INTO lesson(content)
 VALUES
 ('# coucou\n
 ça va ?\n
