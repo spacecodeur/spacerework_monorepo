@@ -2,8 +2,9 @@ use diesel::prelude::*;
 use std::env;
 pub mod models;
 pub mod schema;
-
 pub mod domain;
+
+#[cfg(test)]
 pub mod tests;
 
 pub fn establish_connection() -> PgConnection {
