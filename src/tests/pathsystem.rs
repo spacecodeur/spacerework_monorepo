@@ -1,3 +1,4 @@
+#[cfg(test)]
 use crate::domain::pathsystem::is_dir;
 
 #[test]
