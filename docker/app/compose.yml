@@ -17,9 +17,6 @@ services:
       - '3000:3000'
     volumes: # mount the project into a volume but node_modules, target and .tuono directories will be empty in host-side
       - ../..:/app
-      - /app/node_modules
-      - /app/target
-      - /app/.tuono
     tty: true
     networks:
       - default
