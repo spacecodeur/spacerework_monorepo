@@ -8,7 +8,6 @@ if [[ ! -d "$COMMANDS_DIR" ]]; then
     exit 1
 fi
 
-# Lire la valeur de APP_NAME depuis le fichier .env
 if [ -f "$ENV_FILE" ]; then
   APP_NAME=$(grep '^APP_NAME=' "$ENV_FILE" | cut -d '=' -f 2)
 else
@@ -19,12 +18,9 @@ fi
 export APP_NAME
 
 show_help() {
-    echo "Usage: \`$0 <command>\`"
-    echo "Available commands: (fc-* = from (docker) container)"
-    for cmd_file in "$COMMANDS_DIR"/*.sh; do
-        cmd_name=$(basename "$cmd_file" .sh)
-        echo "  $cmd_name"
-    done
+    echo "Usage: \`$0 <command/subcommand/...>.sh\`"
+    echo "Available commands:"
+    find "$COMMANDS_DIR" -type f -name "*.sh" | sed "s|^$COMMANDS_DIR/||" | sed 's|.sh$||' | sort
     echo "Enable autocompletion: \`$0 --setup\`"
 }
 
@@ -38,7 +34,7 @@ is_running_in_docker() {
 
 _commands_autocomplete() {
     local cur="${COMP_WORDS[COMP_CWORD]}"
-    local commands=$(find "$COMMANDS_DIR" -name "*.sh" -exec basename {} .sh \;)
+    local commands=$(find "$COMMANDS_DIR" -type f -name "*.sh" | sed "s|^$COMMANDS_DIR/||" | sed 's|.sh$||')
     COMPREPLY=($(compgen -W "$commands" -- "$cur"))
 }
 
@@ -65,18 +61,18 @@ else
     COMMAND=$1
     COMMAND_FILE="$COMMANDS_DIR/$COMMAND.sh"
 
-    # Check if the command file exists
+    # check if the command file exists
     if [[ ! -f "$COMMAND_FILE" ]]; then
         echo "Unknown command: $COMMAND"
         show_help
         exit 1
     fi
 
-    if [[ "$COMMAND" == fc-* ]] && ! is_running_in_docker; then
+    if [[ "$COMMAND" == fc/* ]] && ! is_running_in_docker; then
         # keep --tty and --interactive : if not, SIGINT (ctrl+c) won't be correctly pass from host to container
         docker exec --tty --interactive --workdir /app ${APP_NAME}-app-container ./commands.sh $COMMAND
     else
-        # Execute the command with parameters starting from the second argument
+        # execute the command with parameters starting from the second argument
         bash "$COMMAND_FILE" "${@:2}"
     fi
 fi
