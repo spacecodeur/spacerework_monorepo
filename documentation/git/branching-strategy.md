@@ -11,6 +11,7 @@
 | **test/**     | Testing-related work |
 | **refactor/** | Code refactoring |
 | **chore/**    | Maintenance and tooling |
+| **poc/**      | Proof of Concept for feasibility testing |
 
 ### 🔹 Examples:
 ```
@@ -29,3 +30,7 @@ chore/update-dependencies
    - Create a branch: `git checkout -b feature/your-feature`
    - Push and open a pull request to `develop`
    - Merge only after review
+3. **Proof of Concept (PoC) workflow**:
+   - Create a PoC branch: `git checkout -b poc/your-concept`
+   - Test feasibility before integrating into `feature/` branches
+   - If validated, merge into a feature branch or discard
