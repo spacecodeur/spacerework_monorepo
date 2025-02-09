@@ -1,39 +1,78 @@
-import type { JSX } from 'react'
-import ContributorCard from '../components/contributorCard/contributorCard'
-import type { TuonoProps } from 'tuono'
-// import init, { md_to_html } from "../wasm/md_to_html.js"
+import { JSX, useState } from 'react';
 
-export default function IndexPage({
-    data,
-    isLoading,
-}: TuonoProps<string>): JSX.Element {
+interface ApiResponse {
+	id?: number;
+	title?: string;
+	body?: string;
+	userId?: number;
+	error?: string;
+}
 
-	// await init();
+export default function IndexPage(): JSX.Element {
+	const [response, setResponse] = useState<ApiResponse | null>(null);
 
-	if (isLoading) {
-        return <h1>Loading...</h1>
-    }
+	const handleGet = async (): Promise<void> => {
+		try {
+			const res = await fetch('http://0.0.0.0:3000/api/example_queries');
+			const data: ApiResponse = await res.json();
+			setResponse(data);
+		} catch (error) {
+			console.error('GET request failed:', error);
+			setResponse({ error: 'GET request failed' });
+		}
+	};
 
+	const handlePost = async (): Promise<void> => {
+		try {
+			const res = await fetch('http://0.0.0.0:3000/api/example_queries', {
+				method: 'POST',
+				headers: { 
+					'Content-Type': 'application/json',
+					'body' : JSON.stringify({ title: 'Test' })
+				},
+				// body: JSON.stringify({ title: 'Test' }) // tuono ne supporte pas encore le passage par body
+			});
+			const data: ApiResponse = await res.json();
+			setResponse(data);
+		} catch (error) {
+			console.error('POST request failed:', error);
+			setResponse({ error: 'POST request failed' });
+		}
+	};
+
+	const handlePut = async (): Promise<void> => {
+		try {
+			const res = await fetch('https://jsonplaceholder.typicode.com/posts/1', {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ title: 'Updated Test' })
+			});
+			const data: ApiResponse = await res.json();
+			setResponse(data);
+		} catch (error) {
+			console.error('PUT request failed:', error);
+			setResponse({ error: 'PUT request failed' });
+		}
+	};
+
+	const handleDelete = async (): Promise<void> => {
+		try {
+			const res = await fetch('https://jsonplaceholder.typicode.com/posts/1', { method: 'DELETE' });
+			const data: ApiResponse = await res.json();
+			setResponse(data);
+		} catch (error) {
+			console.error('DELETE request failed:', error);
+			setResponse({ error: 'DELETE request failed' });
+		}
+	};
 
 	return (
-		<>
-		<h1>Homepage</h1>
-		{/* <h2>{md_to_html("pouet")}</h2> */}
-		<ContributorCard 
-			picture={'spacecodeur.png'} 
-			pseudo={'spacecodeur'} 
-			email={'spacecodeur@gmail.com'} 
-			networks={
-				{
-					linkedin: "https://www.linkedin.com/in/spacecodeur",
-					gitlab: "https://gitlab.com/spacecodeur",
-					github: "https://github.com/spacecodeur"
-				}
-			} />
-		<ContributorCard picture={''} pseudo={'hazefury'} email={''} />
 		<div>
-			<p>{data}</p>
+			<button type="button" onClick={handleGet}>GET</button>
+			<button type="button" onClick={handlePost}>POST</button>
+			<button type="button" onClick={handlePut}>PUT</button>
+			<button type="button" onClick={handleDelete}>DELETE</button>
+			{response && <pre>{JSON.stringify(response, null, 2)}</pre>}
 		</div>
-		</>
-	)
+	);
 }

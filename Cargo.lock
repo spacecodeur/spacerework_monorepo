@@ -2400,6 +2400,7 @@ dependencies = [
  "dotenvy",
  "md_to_html",
  "serde",
+ "serde_json",
  "tuono_lib",
 ]
 
