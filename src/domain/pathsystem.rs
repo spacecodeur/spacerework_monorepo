@@ -1,6 +1,6 @@
 use regex::Regex;
 
-pub fn is_dir(path: &str) -> Result<bool, &'static str> {
+pub fn is_dir_semantic_check(path: &str) -> Result<bool, &'static str> {
     if path == "" {
         return Ok(true);
     }
