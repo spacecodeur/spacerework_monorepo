@@ -1,9 +1,12 @@
 use regex::Regex;
 
 pub fn is_dir(path: &str) -> Result<bool, &'static str> {
+    if path == "" {
+        return Ok(true);
+    }
     let re = Regex::new(r"^[a-zA-Z0-9]+(\.md)?$").unwrap();
     let parts: Vec<&str> = path.split('/').collect();
-    
+
     for (i, part) in parts.iter().enumerate() {
         if !re.is_match(part) {
             return Err("malformed piece of path");

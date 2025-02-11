@@ -6,6 +6,8 @@ fn check_if_dir() {
     assert_eq!(result, Ok(true));
     let result = is_dir("cours");
     assert_eq!(result, Ok(true));
+    let result = is_dir("");
+    assert_eq!(result, Ok(true));
 }
 
 #[test]
