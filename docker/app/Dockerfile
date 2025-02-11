@@ -20,7 +20,7 @@ RUN ["/bin/sh", "-c", "rm node-v${NODE_VERSION}-linux-x64.tar.xz"]
 ENV PATH /usr/local/node/bin:$PATH
 
 # binstall allows downloading only binaries (avoiding time spent downloading and compiling from source)
-RUN ["cargo", "install", "cargo-binstall"]
+RUN ["cargo", "install", "cargo-binstall", "--locked"]
 RUN ["cargo", "binstall", "diesel_cli", "--secure", "--no-confirm"]
 RUN ["cargo", "binstall", "wasm-pack", "--secure", "--no-confirm"]
 
