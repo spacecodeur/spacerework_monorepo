@@ -1,8 +1,8 @@
 use md_to_html::md_to_html;
 use serde::Serialize;
 use tuono_lib::{Props, Request, Response};
-use diesel::prelude::*;
-use tuono_app::{establish_connection, models::*};
+// use diesel::prelude::*;
+// use tuono_app::
 
 #[derive(Serialize)]
 struct Path {
@@ -38,17 +38,15 @@ fn path(path: &str) -> Path {
 }
 
 fn get_lesson() -> Option<Lesson> {
-    use tuono_app::schema::lesson::dsl::*;
     
-    let connection = &mut establish_connection();
-    let results= lesson
-    .select(Lesson::as_select())
-    .load(connection)
-    .expect("Error loading lesson");
+    // let results= lesson
+    // .select(Lesson::as_select())
+    // .load(connection)
+    // .expect("Error loading lesson");
     
     return Some(Lesson{
-        id: results[0].id,
-        content: results[0].content.clone()
+        id: 3,
+        content: "tototoekrndklngdlkngkldngkldrngkldng"
     });
 }
 

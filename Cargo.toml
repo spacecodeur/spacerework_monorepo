@@ -3,6 +3,9 @@ name = "tuono-app"
 version = "0.0.1"
 edition = "2021"
 
+[workspace]
+members = ["src/migration"]
+
 [[bin]]
 name = "tuono"
 path = ".tuono/main.rs"
