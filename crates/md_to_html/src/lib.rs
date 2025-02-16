@@ -19,7 +19,7 @@ use comrak::{markdown_to_html, Options};
 
 #[wasm_bindgen]
 pub fn md_to_html(content: &str) -> String {
-    let html : String = markdown::to_html(content);
+    // let html : String = markdown::to_html(content);
     
     // let html2 : String = markdown_to_html(content, &Options::default());
 
