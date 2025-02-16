@@ -1,7 +1,9 @@
+@use "sass:meta";
+
 .card{
     background-color: aquamarine;
 }
 
 @media screen and (min-width: 1600px) {
-    @import "./xxl/global.scss";
+    @include meta.load-css("xxl/global.scss");
 }
