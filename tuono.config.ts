@@ -5,6 +5,15 @@ const config: TuonoConfig = {
         host: '0.0.0.0',
         port: 3000,
     },
+    vite: {
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: 'modern-compiler'
+                }
+            }
+        },
+    }
 }
 
 export default config
