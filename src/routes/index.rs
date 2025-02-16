@@ -6,4 +6,3 @@ use tuono_lib::{Props, Request, Response};
 async fn get_server_side_props(_req: Request) -> Response {
     Response::Props(Props::new(md_to_html("Marco")))
 }
-

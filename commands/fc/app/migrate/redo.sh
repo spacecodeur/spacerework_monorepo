@@ -1,3 +1,4 @@
 #!/bin/bash
 
-diesel migration redo
+sea-orm-cli migrate -d src/migration down -n 1 && \
+sea-orm-cli migrate -d src/migration up -n 1
