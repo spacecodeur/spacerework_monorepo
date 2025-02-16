@@ -1,7 +1,10 @@
 [package]
-name = "tuono-app"
+name = "app"
 version = "0.0.1"
 edition = "2021"
+
+[workspace]
+members = ["src/migration"]
 
 [[bin]]
 name = "tuono"
@@ -10,6 +13,6 @@ path = ".tuono/main.rs"
 [dependencies]
 tuono_lib = "0.17.6"
 serde = { version = "1.0.202", features = ["derive"] }
-diesel = { version = "2.2.6", features = ["postgres"] }
 dotenvy = "0.15.7"
 md_to_html = { path = "./crates/md_to_html" }
+sea-orm = { version = "1.1.4", features = ["sqlx-postgres", "runtime-async-std-native-tls", "macros", "mock"] }
