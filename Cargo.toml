@@ -16,7 +16,6 @@ serde = { version = "1.0.202", features = ["derive"] }
 dotenvy = "0.15.7"
 md_to_html = { path = "./crates/md_to_html" }
 sea-orm = { version = "1.1.4", features = ["sqlx-postgres", "runtime-async-std-native-tls", "macros", "mock"] }
-
 regex = "1.11.1"
 
 [features]
