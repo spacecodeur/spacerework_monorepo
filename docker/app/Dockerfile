@@ -3,6 +3,11 @@ ARG BASE_OS
 ARG RUST_VERSION
 FROM rust:${RUST_VERSION}-${BASE_OS}
 
+# Install Rust components globally (e.g., rustfmt, etc.)
+
+## Enable automatic code formatting for Rust (needed by example during entities generation with sea-orm)
+RUN ["rustup", "component", "add", "rustfmt"]
+
 # Nodejs installation
 
 RUN ["mkdir", "/usr/local/nvm"]
@@ -21,7 +26,7 @@ ENV PATH /usr/local/node/bin:$PATH
 
 # binstall allows downloading only binaries (avoiding time spent downloading and compiling from source)
 RUN ["cargo", "install", "cargo-binstall", "--locked"]
-RUN ["cargo", "binstall", "diesel_cli", "--secure", "--no-confirm"]
+RUN ["cargo", "binstall", "sea-orm-cli", "--secure", "--no-confirm"]
 RUN ["cargo", "binstall", "wasm-pack", "--secure", "--no-confirm"]
 
 # cargo-llvm-cov: generates test reports and code coverage
@@ -32,7 +37,7 @@ RUN ["cargo", "binstall", "cargo-nextest", "--secure", "--no-confirm"]
 RUN ["cargo", "binstall", "cargo-mutants", "--secure", "--no-confirm"]
 
 ARG TUONO_VERSION
-RUN ["/bin/sh", "-c", "cargo install tuono@^${TUONO_VERSION}"]
+RUN ["/bin/sh", "-c", "cargo binstall tuono@^${TUONO_VERSION} --secure --no-confirm"]
 
 # create container user with same rights than host user
 RUN groupadd -g 1000 appuser && \

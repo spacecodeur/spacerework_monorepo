@@ -6,7 +6,7 @@
 ./commands.sh db/container/build &
 wait
 
-./commands.sh fc/app/migrate/run
+./commands.sh fc/app/migrate/up-all
 ./commands.sh fc/app/wasm-build
 
 echo
