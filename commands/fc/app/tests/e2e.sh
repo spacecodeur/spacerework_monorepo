@@ -1,4 +1,3 @@
 #!/bin/bash
 
 echo "No end-to-end tests yet"
-#cargo test --features e2e --test "*"

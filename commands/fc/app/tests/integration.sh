@@ -1,3 +1,7 @@
 #!/bin/bash
 
-cargo test --features integration --test "*"
+if [ -n "$1" ]; then
+    cargo test --test integration -- "$1"
+else
+    cargo test --test integration
+fi

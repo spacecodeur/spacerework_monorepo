@@ -28,5 +28,5 @@ fn check_if_malformed() {
     let result = is_dir_semantic_check("toto/titi/cours.coucou");
     assert_eq!(result, Err("malformed piece of path"));
     let result = is_dir_semantic_check("toto/titi/cou??rs/tata");
-    assert_eq!(result, Err("malformed path"));
+    assert_eq!(result, Err("malformed piece of path"));
 }
