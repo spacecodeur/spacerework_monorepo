@@ -1,6 +1,6 @@
-// pub fn is_dir_db_check(path: &str) -> Result<bool, &'static str> {
-// todo
-// }
+pub fn get_segment_data(path: &str, trainer_id: i32) -> Result<Vec<&'static str>, &'static str> {
+    Ok(vec!["coursphp.md", "tata"])
+}
 
 // pub fn is_dir_db_check => retourne id dir ou lesson
 
