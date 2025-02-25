@@ -1,7 +1,5 @@
 #!/bin/bash
 
-./commands.sh docker/clean-with-cache
-
 ./commands.sh app/container/build &
 ./commands.sh db/container/build &
 wait
