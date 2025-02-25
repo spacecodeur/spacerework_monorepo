@@ -9,7 +9,8 @@ pub struct DatabaseService {
 
 impl DatabaseService {
     pub async fn init() -> Self {
-        dotenvy::dotenv().ok();
+        dotenvy::dotenv().expect(".env file not found, not readable or invalid");
+
         let database_url =
             env::var("DATABASE_URL").expect("DATABASE_URL must be defined in the .env file");
 
