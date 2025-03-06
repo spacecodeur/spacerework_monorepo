@@ -6,7 +6,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sass": "^1.83.0",
-    "tuono": "0.17.8"
+    "tuono": "0.17.10"
   },
   "devDependencies": {
     "@playwright/test": "^1.50.1",
