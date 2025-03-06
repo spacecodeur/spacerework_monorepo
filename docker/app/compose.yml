@@ -15,9 +15,10 @@ services:
         TUONO_VERSION: 0.17.10
     ports:
       - '3000:3000'
-    volumes: # mount the project into a volume but node_modules, target and .tuono directories will be empty in host-side
+    volumes:
       - ../..:/app
     tty: true
+    command: ["docker/app/post_build.sh"]
     networks:
       - default
 
