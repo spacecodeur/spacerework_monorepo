@@ -1,5 +1,5 @@
 [package]
-name = "md_to_html"
+name = "space_md_to_html"
 version = "0.1.0"
 edition = "2021"
 

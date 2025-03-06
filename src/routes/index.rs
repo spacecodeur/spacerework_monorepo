@@ -1,4 +1,4 @@
-use md_to_html::md_to_html;
+use space_md_to_html::md_to_html;
 
 use tuono_lib::{Props, Request, Response};
 
