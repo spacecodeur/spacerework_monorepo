@@ -9,7 +9,7 @@ pub fn is_dir_semantic_check(path: &str) -> Result<bool, &'static str> {
 
     for (i, part) in parts.iter().enumerate() {
         if !re.is_match(part) {
-            return Err("malformed piece of path");
+            return Err("malformed path");
         }
         if part.ends_with(".md") {
             if i != parts.len() - 1 {

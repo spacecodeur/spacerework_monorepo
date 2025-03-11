@@ -56,8 +56,7 @@ async fn get_childs_of_valid_segment() {
     assert_eq!(result.unwrap().name, "lesson.md");
 
     result = get_pathsegment_from_path(&db_connection, "dir1/this_dir_does_not_exist", 1).await;
-    assert_eq!(result.is_err(), true);
-    assert_eq!(result.unwrap_err(), "segment not found !");
+    assert_eq!(result, Err("segment not found !"));
 }
 
 #[test]
