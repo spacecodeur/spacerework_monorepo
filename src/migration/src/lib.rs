@@ -9,9 +9,13 @@ impl MigratorTrait for Migrator {
             Box::new(m20250213_230915_create_table_user::Migration),
             Box::new(m20250213_231309_create_table_lesson::Migration),
             Box::new(m20250215_141600_create_table_pathsegment::Migration),
+            Box::new(m20250311_144024_create_table_segmenttype::Migration),
+            Box::new(m20250311_145327_join_pathsegment_to_segmentype::Migration),
         ]
     }
 }
 mod m20250213_230915_create_table_user;
 mod m20250213_231309_create_table_lesson;
 mod m20250215_141600_create_table_pathsegment;
+mod m20250311_144024_create_table_segmenttype;
+mod m20250311_145327_join_pathsegment_to_segmentype;
