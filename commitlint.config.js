@@ -5,15 +5,15 @@ module.exports = {
             2,
             'always',
             [
-                'feature',   // New feature
-                'fix',       // Bug fix
-                'chore',     // Maintenance or tooling update
-                'docs',      // Documentation changes
-                'test',      // Adding/updating tests
-                'refactor',  // Code improvement without behavior change
-                'poc',       // Proof of Concept (experimental implementation)
-                'perf',      // Performance improvements
-                'ci'         // CI/CD updates
+                'feature',      // New feature
+                'fix',          // Bug fix
+                'chore',        // Maintenance or tooling update
+                'docs',         // Documentation changes
+                'test',         // Adding/updating tests
+                'refactoring',  // Code improvement without behavior change
+                'poc',          // Proof of Concept (experimental implementation)
+                'perf',         // Performance improvements
+                'ci'            // CI/CD updates
             ]
         ],
         'subject-case': [
