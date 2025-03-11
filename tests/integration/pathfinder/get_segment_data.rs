@@ -29,42 +29,18 @@ async fn get_childs_of_valid_segment() {
         .await
         .expect("could not insert trainer");
 
+    #[rustfmt::skip]
     let segments = vec![
-        path_segment::Model {
-            id: 1,
-            name: "dir1".to_string(),
-            segment_parent_id: None,
-            trainer_id: Some(1),
-        },
-        path_segment::Model {
-            id: 2,
-            name: "dir2".to_string(),
-            segment_parent_id: Some(1),
-            trainer_id: None,
-        },
-        path_segment::Model {
-            id: 3,
-            name: "dir3".to_string(),
-            segment_parent_id: Some(2),
-            trainer_id: None,
-        },
-        path_segment::Model {
-            id: 4,
-            name: "lesson.md".to_string(),
-            segment_parent_id: Some(2),
-            trainer_id: None,
-        },
-        path_segment::Model {
-            id: 5,
-            name: "dir4".to_string(),
-            segment_parent_id: Some(3),
-            trainer_id: None,
-        },
+        path_segment::Model {id: 1, name: "dir1".to_string(),       segment_parent_id: None,    trainer_id: Some(1)},
+        path_segment::Model {id: 2, name: "dir2".to_string(),       segment_parent_id: Some(1), trainer_id: None},
+        path_segment::Model {id: 3, name: "dir3".to_string(),       segment_parent_id: Some(2), trainer_id: None},
+        path_segment::Model {id: 4, name: "lesson.md".to_string(),  segment_parent_id: Some(2), trainer_id: None},
+        path_segment::Model {id: 5, name: "dir4".to_string(),       segment_parent_id: Some(3), trainer_id: None},
     ];
 
     // Convert Vec<Model> into Vec<ActiveModel>
     let active_segments: Vec<path_segment::ActiveModel> =
-        segments.clone().into_iter().map(Into::into).collect();
+        segments.into_iter().map(Into::into).collect();
 
     path_segment::Entity::insert_many(active_segments)
         .exec(&db_connection)
