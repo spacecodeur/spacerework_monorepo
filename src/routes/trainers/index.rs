@@ -1,4 +1,6 @@
-use app::{domain::entities::user, infrastructure::database::pool::DatabaseService};
+use app::{
+    infrastructure::database::models::user, infrastructure::database::pool::DatabaseService,
+};
 use sea_orm::EntityTrait;
 use serde::Serialize;
 use tuono_lib::{Props, Request, Response};

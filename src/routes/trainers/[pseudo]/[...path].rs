@@ -1,6 +1,6 @@
-use app::domain::entities::lesson::Model as Lesson;
-use space_md_to_html::md_to_html;
+use app::infrastructure::database::models::lesson::Model as Lesson;
 use serde::Serialize;
+use space_md_to_html::md_to_html;
 use tuono_lib::{Props, Request, Response};
 
 #[derive(Serialize)]

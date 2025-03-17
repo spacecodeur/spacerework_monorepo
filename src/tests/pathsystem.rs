@@ -1,4 +1,4 @@
-use crate::domain::pathsystem::is_dir_semantic_check;
+use crate::domain::services::pathsystem::is_dir_semantic_check;
 
 #[test]
 fn check_if_dir() {

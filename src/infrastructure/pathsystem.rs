@@ -1,6 +1,6 @@
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 
-use super::super::domain::entities::path_segment;
+use super::database::models::path_segment;
 
 pub async fn get_pathsegment_from_path(
     db_connection: &DatabaseConnection,
