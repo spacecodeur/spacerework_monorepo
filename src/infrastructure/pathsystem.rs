@@ -14,6 +14,7 @@ pub async fn get_pathsegment_from_path(
         name: String::new(),
         segment_parent_id: None,
         trainer_id: None,
+        segment_type_id: 0,
     };
 
     for (i, part) in parts.iter().enumerate() {

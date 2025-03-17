@@ -4,29 +4,22 @@ use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
-#[sea_orm(table_name = "lesson")]
+#[sea_orm(table_name = "segment_type")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
-    pub content: String,
-    pub user_id: i32,
+    pub name: String,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(
-        belongs_to = "super::user::Entity",
-        from = "Column::UserId",
-        to = "super::user::Column::Id",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
-    User,
+    #[sea_orm(has_many = "super::path_segment::Entity")]
+    PathSegment,
 }
 
-impl Related<super::user::Entity> for Entity {
+impl Related<super::path_segment::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::User.def()
+        Relation::PathSegment.def()
     }
 }
 

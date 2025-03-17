@@ -1,4 +1,4 @@
-use app::infrastructure::database::models::{path_segment, user};
+use app::infrastructure::database::models::{path_segment, segment_type, user};
 use app::infrastructure::pathsystem::get_pathsegment_from_path;
 use sea_orm::{ActiveModelTrait, EntityTrait};
 use space_macros::use_temp_db;
@@ -29,13 +29,29 @@ async fn get_childs_of_valid_segment() {
         .await
         .expect("could not insert trainer");
 
+    segment_type::ActiveModel {
+        id: Set(1),
+        name: Set("dir".to_string()),
+    }
+    .insert(&db_connection)
+    .await
+    .expect("could not insert segment type");
+
+    segment_type::ActiveModel {
+        id: Set(2),
+        name: Set("lesson".to_string()),
+    }
+    .insert(&db_connection)
+    .await
+    .expect("could not insert segment type");
+
     #[rustfmt::skip]
     let segments = vec![
-        path_segment::Model {id: 1, name: "dir1".to_string(),       segment_parent_id: None,    trainer_id: Some(1)},
-        path_segment::Model {id: 2, name: "dir2".to_string(),       segment_parent_id: Some(1), trainer_id: None},
-        path_segment::Model {id: 3, name: "dir3".to_string(),       segment_parent_id: Some(2), trainer_id: None},
-        path_segment::Model {id: 4, name: "lesson.md".to_string(),  segment_parent_id: Some(2), trainer_id: None},
-        path_segment::Model {id: 5, name: "dir4".to_string(),       segment_parent_id: Some(3), trainer_id: None},
+        path_segment::Model {id: 1, name: "dir1".to_string(),       segment_parent_id: None,    trainer_id: Some(1),segment_type_id:1},
+        path_segment::Model {id: 2, name: "dir2".to_string(),       segment_parent_id: Some(1), trainer_id: None,   segment_type_id:1},
+        path_segment::Model {id: 3, name: "dir3".to_string(),       segment_parent_id: Some(2), trainer_id: None,   segment_type_id:1},
+        path_segment::Model {id: 4, name: "lesson.md".to_string(),  segment_parent_id: Some(2), trainer_id: None,   segment_type_id:2},
+        path_segment::Model {id: 5, name: "dir4".to_string(),       segment_parent_id: Some(3), trainer_id: None,   segment_type_id:1}
     ];
 
     // Convert Vec<Model> into Vec<ActiveModel>
