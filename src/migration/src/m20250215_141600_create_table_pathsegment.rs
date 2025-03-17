@@ -12,7 +12,6 @@ impl MigrationTrait for Migration {
             .create_table(
                 Table::create()
                     .table(PathSegment::Table)
-                    .if_not_exists()
                     .col(pk_auto(PathSegment::Id))
                     .col(string_len(PathSegment::Name, 50))
                     .col(integer_null(PathSegment::SegmentParentId))
@@ -44,7 +43,7 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
-enum PathSegment {
+pub enum PathSegment {
     Table,
     Id,
     Name,

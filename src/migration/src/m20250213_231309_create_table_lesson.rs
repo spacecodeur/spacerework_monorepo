@@ -12,7 +12,6 @@ impl MigrationTrait for Migration {
             .create_table(
                 Table::create()
                     .table(Lesson::Table)
-                    .if_not_exists()
                     .col(pk_auto(Lesson::Id))
                     .col(string(Lesson::Content))
                     .col(integer(Lesson::UserId))

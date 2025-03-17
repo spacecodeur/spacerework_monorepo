@@ -9,9 +9,9 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(User::Table)
-                    .col(pk_auto(User::Id))
-                    .col(string_len(User::Pseudo, 50))
+                    .table(SegmentType::Table)
+                    .col(pk_auto(SegmentType::Id))
+                    .col(string(SegmentType::Name))
                     .to_owned(),
             )
             .await
@@ -19,14 +19,14 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(User::Table).to_owned())
+            .drop_table(Table::drop().table(SegmentType::Table).to_owned())
             .await
     }
 }
 
 #[derive(DeriveIden)]
-pub enum User {
+pub enum SegmentType {
     Table,
     Id,
-    Pseudo,
+    Name,
 }
