@@ -10,14 +10,14 @@ fi
 
 if [ -f "$ENV_FILE" ]; then
   APP_NAME=$(grep '^APP_NAME=' "$ENV_FILE" | cut -d '=' -f 2)
-  ENTITIES_DIR=$(grep '^ENTITIES_DIR=' "$ENV_FILE" | cut -d '=' -f 2)
+  DATABASE_ENTITIES_DIR=$(grep '^DATABASE_ENTITIES_DIR=' "$ENV_FILE" | cut -d '=' -f 2)
 else
   echo "Erreur : le fichier .env est introuvable."
   exit 1
 fi
 
 export APP_NAME
-export ENTITIES_DIR
+export DATABASE_ENTITIES_DIR
 
 show_help() {
     echo "Usage: \`$0 <command/subcommand/...>.sh\`"

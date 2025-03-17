@@ -4,5 +4,6 @@ pub mod prelude;
 
 pub mod lesson;
 pub mod path_segment;
-pub mod segment_type;
+pub mod path_segment_type;
+pub mod sea_orm_active_enums;
 pub mod user;

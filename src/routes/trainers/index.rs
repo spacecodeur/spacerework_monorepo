@@ -1,5 +1,5 @@
 use app::{
-    infrastructure::database::models::user, infrastructure::database::pool::DatabaseService,
+    infrastructure::database::entities::user, infrastructure::database::pool::DatabaseService,
 };
 use sea_orm::EntityTrait;
 use serde::Serialize;

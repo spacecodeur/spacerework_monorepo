@@ -2,5 +2,5 @@
 
 pub use super::lesson::Entity as Lesson;
 pub use super::path_segment::Entity as PathSegment;
-pub use super::segment_type::Entity as SegmentType;
+pub use super::path_segment_type::Entity as PathSegmentType;
 pub use super::user::Entity as User;

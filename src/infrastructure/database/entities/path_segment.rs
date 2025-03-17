@@ -25,13 +25,13 @@ pub enum Relation {
     )]
     SelfRef,
     #[sea_orm(
-        belongs_to = "super::segment_type::Entity",
+        belongs_to = "super::path_segment_type::Entity",
         from = "Column::SegmentTypeId",
-        to = "super::segment_type::Column::Id",
+        to = "super::path_segment_type::Column::Id",
         on_update = "NoAction",
         on_delete = "NoAction"
     )]
-    SegmentType,
+    PathSegmentType,
     #[sea_orm(
         belongs_to = "super::user::Entity",
         from = "Column::TrainerId",
@@ -42,9 +42,9 @@ pub enum Relation {
     User,
 }
 
-impl Related<super::segment_type::Entity> for Entity {
+impl Related<super::path_segment_type::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::SegmentType.def()
+        Relation::PathSegmentType.def()
     }
 }
 

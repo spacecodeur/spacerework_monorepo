@@ -1,3 +1,3 @@
-pub struct Model {
+pub struct User {
     pub pseudo: String,
 }

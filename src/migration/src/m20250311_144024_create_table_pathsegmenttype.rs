@@ -12,8 +12,8 @@ impl MigrationTrait for Migration {
         manager
             .create_type(
                 Type::create()
-                    .as_enum(SegmentTypeName::Enum)
-                    .values([SegmentTypeName::Directory, SegmentTypeName::Lesson])
+                    .as_enum(PathSegmentTypeName::Enum)
+                    .values([PathSegmentTypeName::Directory, PathSegmentTypeName::Lesson])
                     .to_owned(),
             )
             .await?;
@@ -21,11 +21,11 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(SegmentType::Table)
-                    .col(pk_auto(SegmentType::Id))
-                    .col(ColumnDef::new(SegmentType::Name).enumeration(
-                        SegmentTypeName::Enum,
-                        [SegmentTypeName::Directory, SegmentTypeName::Lesson],
+                    .table(PathSegmentType::Table)
+                    .col(pk_auto(PathSegmentType::Id))
+                    .col(ColumnDef::new(PathSegmentType::Name).enumeration(
+                        PathSegmentTypeName::Enum,
+                        [PathSegmentTypeName::Directory, PathSegmentTypeName::Lesson],
                     ))
                     .to_owned(),
             )
@@ -34,25 +34,25 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_type(Type::drop().name(SegmentTypeName::Enum).to_owned())
+            .drop_table(Table::drop().table(PathSegmentType::Table).to_owned())
             .await?;
 
         manager
-            .drop_table(Table::drop().table(SegmentType::Table).to_owned())
+            .drop_type(Type::drop().name(PathSegmentTypeName::Enum).to_owned())
             .await
     }
 }
 
 #[derive(DeriveIden)]
-pub enum SegmentType {
+pub enum PathSegmentType {
     Table,
     Id,
     Name,
 }
 
 #[derive(DeriveIden)]
-enum SegmentTypeName {
-    #[sea_orm(iden = "Name")]
+enum PathSegmentTypeName {
+    #[sea_orm(iden = "segment_type_name")]
     Enum,
     #[sea_orm(iden = "directory")]
     Directory,

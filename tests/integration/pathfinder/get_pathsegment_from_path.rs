@@ -1,4 +1,4 @@
-use app::infrastructure::database::models::{path_segment, segment_type, user};
+use app::infrastructure::database::entities::{path_segment, segment_type, user};
 use app::infrastructure::pathsystem::get_pathsegment_from_path;
 use sea_orm::{ActiveModelTrait, EntityTrait};
 use space_macros::use_temp_db;

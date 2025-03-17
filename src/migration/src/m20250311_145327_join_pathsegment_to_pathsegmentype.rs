@@ -1,6 +1,6 @@
 use sea_orm_migration::{prelude::*, schema::*};
 
-use crate::m20250311_144024_create_table_segmenttype::SegmentType;
+use crate::m20250311_144024_create_table_pathsegmenttype::PathSegmentType;
 
 #[derive(DeriveIden)]
 enum PathSegment {
@@ -24,8 +24,8 @@ impl MigrationTrait for Migration {
                             .name("FK_segment_type")
                             .from_tbl(PathSegment::Table)
                             .from_col(PathSegment::SegmentTypeId)
-                            .to_tbl(SegmentType::Table)
-                            .to_col(SegmentType::Id),
+                            .to_tbl(PathSegmentType::Table)
+                            .to_col(PathSegmentType::Id),
                     )
                     .to_owned(),
             )
