@@ -1,6 +1,5 @@
-use super::user::User;
-
 pub struct Lesson {
+    pub id: i32,
     pub content: String,
-    pub user_id: User,
+    pub user_id: i32,
 }
