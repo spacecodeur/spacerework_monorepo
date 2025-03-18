@@ -1,4 +1,6 @@
-use app::infrastructure::database::entities::{path_segment, segment_type, user};
+use app::infrastructure::database::entities::{
+    path_segment, path_segment_type, sea_orm_active_enums::*, user,
+};
 use app::infrastructure::pathsystem::get_pathsegment_from_path;
 use sea_orm::{ActiveModelTrait, EntityTrait};
 use space_macros::use_temp_db;
@@ -29,17 +31,17 @@ async fn get_childs_of_valid_segment() {
         .await
         .expect("could not insert trainer");
 
-    segment_type::ActiveModel {
+    path_segment_type::ActiveModel {
         id: Set(1),
-        name: Set("dir".to_string()),
+        name: Set(Some(SegmentTypeName::Directory)),
     }
     .insert(&db_connection)
     .await
     .expect("could not insert segment type");
 
-    segment_type::ActiveModel {
+    path_segment_type::ActiveModel {
         id: Set(2),
-        name: Set("lesson".to_string()),
+        name: Set(Some(SegmentTypeName::Lesson)),
     }
     .insert(&db_connection)
     .await
