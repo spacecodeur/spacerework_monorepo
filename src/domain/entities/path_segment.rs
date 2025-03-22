@@ -1,7 +1,14 @@
+use std::cell::RefCell;
+use std::rc::{Rc, Weak};
+
+use super::super::types::enums::SegmentTypeEnum;
+use super::user::User;
+
+#[derive(Debug)]
 pub struct PathSegment {
-    pub id: i32,
     pub name: String,
-    pub segment_parent_id: Option<i32>,
-    pub trainer_id: Option<i32>,
-    pub segment_type_id: i32,
+    pub segment_parent: Option<Weak<RefCell<PathSegment>>>,
+    pub children: Vec<Rc<RefCell<PathSegment>>>,
+    pub trainer: Option<Rc<RefCell<User>>>,
+    pub segment_type: SegmentTypeEnum,
 }

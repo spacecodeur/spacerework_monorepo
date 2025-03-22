@@ -33,7 +33,7 @@ async fn get_childs_of_valid_segment() {
 
     path_segment_type::ActiveModel {
         id: Set(1),
-        name: Set(Some(SegmentTypeName::Directory)),
+        name: Set(SegmentTypeName::Directory),
     }
     .insert(&db_connection)
     .await
@@ -41,7 +41,7 @@ async fn get_childs_of_valid_segment() {
 
     path_segment_type::ActiveModel {
         id: Set(2),
-        name: Set(Some(SegmentTypeName::Lesson)),
+        name: Set(SegmentTypeName::Lesson),
     }
     .insert(&db_connection)
     .await
@@ -65,7 +65,9 @@ async fn get_childs_of_valid_segment() {
         .await
         .expect("could not insert path_segment");
 
-    let mut result = get_pathsegment_from_path(&db_connection, "dir1/dir2/dir3/dir4", 1).await;
+    let mut result: Result<app::domain::entities::path_segment::PathSegment, String> =
+        get_pathsegment_from_path(&db_connection, "dir1/dir2/dir3/dir4", 1).await;
+
     assert_eq!(result.is_err(), false);
     assert_eq!(result.unwrap().name, "dir4");
 
@@ -74,7 +76,8 @@ async fn get_childs_of_valid_segment() {
     assert_eq!(result.unwrap().name, "lesson.md");
 
     result = get_pathsegment_from_path(&db_connection, "dir1/this_dir_does_not_exist", 1).await;
-    assert_eq!(result, Err("segment not found !"));
+    assert_eq!(result.is_err(), true);
+    assert_eq!(result.unwrap_err(), "segment not found !".to_string());
 }
 
 #[test]

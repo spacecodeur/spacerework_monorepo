@@ -23,10 +23,14 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(PathSegmentType::Table)
                     .col(pk_auto(PathSegmentType::Id))
-                    .col(ColumnDef::new(PathSegmentType::Name).enumeration(
-                        PathSegmentTypeName::Enum,
-                        [PathSegmentTypeName::Directory, PathSegmentTypeName::Lesson],
-                    ))
+                    .col(
+                        ColumnDef::new(PathSegmentType::Name)
+                            .enumeration(
+                                PathSegmentTypeName::Enum,
+                                [PathSegmentTypeName::Directory, PathSegmentTypeName::Lesson],
+                            )
+                            .not_null(),
+                    )
                     .to_owned(),
             )
             .await

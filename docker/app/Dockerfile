@@ -52,7 +52,7 @@ RUN mkdir -p $CARGO_HOME && chown -R appuser:appuser $CARGO_HOME
 WORKDIR /app
 RUN chown -R appuser:appuser /app
 
-COPY --chown=appuser:appuser . .
+# COPY --chown=appuser:appuser . .
 
 USER appuser
-RUN ["npm", "install"]
+# RUN ["npm", "install"]

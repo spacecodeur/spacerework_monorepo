@@ -1,5 +1,7 @@
+use super::user::User;
+
+#[derive(Debug)]
 pub struct Lesson {
-    pub id: i32,
     pub content: String,
-    pub user_id: i32,
+    pub user: User,
 }
