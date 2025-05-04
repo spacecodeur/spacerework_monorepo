@@ -1,0 +1,52 @@
+#!/bin/bash
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(head -n1 "$COMMIT_MSG_FILE")
+
+# List of allowed commit types and their descriptions
+declare -A VALID_TYPES
+VALID_TYPES=(
+  [feature]="A new feature"
+  [fix]="A bug fix"
+  [chore]="Routine task that doesn't affect the code logic (e.g., dependencies)"
+  [docs]="Documentation-only changes"
+  [test]="Adding or updating tests"
+  [refactor]="Code change that neither fixes a bug nor adds a feature"
+  [perf]="Performance improvement"
+  [ci]="Changes to CI/CD configuration or scripts"
+)
+
+# Extract type and subject from the commit message
+if [[ "$COMMIT_MSG" =~ ^([a-z]+):[[:space:]]+(.*)$ ]]; then
+    TYPE="${BASH_REMATCH[1]}"
+    SUBJECT="${BASH_REMATCH[2]}"
+else
+    echo "❌ Invalid commit message format."
+    echo "Expected format: type: subject"
+    echo
+    echo "Here are some examples of valid messages:"
+    echo "  - feature: add user login flow"
+    echo "  - fix: handle null values in API response"
+    echo
+    echo "📌 Allowed commit types:"
+    for key in "${!VALID_TYPES[@]}"; do
+      printf "  - %-10s → %s\n" "$key" "${VALID_TYPES[$key]}"
+    done
+    exit 1
+fi
+
+echo "✅ Message format is valid!"
+
+# Check if the type is valid
+if [[ -z "${VALID_TYPES[$TYPE]}" ]]; then
+    echo "❌ Invalid commit type: \"$TYPE\""
+    echo
+    echo "📌 Allowed commit types:"
+    for key in "${!VALID_TYPES[@]}"; do
+      printf "  - %-10s → %s\n" "$key" "${VALID_TYPES[$key]}"
+    done
+    exit 1
+fi
+
+echo "✅ Commit type choosen is valid!"
+exit 0

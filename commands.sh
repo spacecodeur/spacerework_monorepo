@@ -10,14 +10,12 @@ fi
 
 if [ -f "$ENV_FILE" ]; then
   APP_NAME=$(grep '^APP_NAME=' "$ENV_FILE" | cut -d '=' -f 2)
-  ENTITIES_DIR=$(grep '^ENTITIES_DIR=' "$ENV_FILE" | cut -d '=' -f 2)
 else
   echo "Erreur : le fichier .env est introuvable."
   exit 1
 fi
 
 export APP_NAME
-export ENTITIES_DIR
 
 show_help() {
     echo "Usage: \`$0 <command/subcommand/...>.sh\`"
@@ -71,8 +69,14 @@ else
     fi
 
     if [[ "$COMMAND" == fc/* ]] && ! is_running_in_docker; then
-        # keep --tty and --interactive : if not, SIGINT (ctrl+c) won't be correctly pass from host to container
-        docker exec --tty --interactive --workdir /app ${APP_NAME}-app-container ./commands.sh $COMMAND "${@:2}"
+        
+        SERVICE=$(echo "$COMMAND" | cut -d '/' -f 2)
+
+        CONTAINER_NAME="${APP_NAME}-${SERVICE}-container"
+
+        # keep --tty and --interactive : if not, SIGINT (ctrl+c) won't be correctly passed from host to container
+        docker exec --tty --interactive --workdir /app "$CONTAINER_NAME" ./commands.sh "$COMMAND" "${@:2}"
+
     else
         # execute the command with parameters starting from the second argument
         bash "$COMMAND_FILE" "${@:2}"

@@ -14,3 +14,13 @@ A CI/CD pipeline is set up via Jenkins, and the application is hosted through cl
   - build the Docker image: `./commands.sh docker-build`
   - start the development server: `./commands.sh fc-server-start` (fc stand for "from (docker) container")
   - et voilà !
+
+# [Important] Enable Git hooks
+
+To activate the Git hooks provided by this base (like commit message validation), configure Git to use the custom hooks path:
+
+```bash
+git config core.hooksPath .git-hooks
+```
+
+This command should be executed from the root of your project, after merging.

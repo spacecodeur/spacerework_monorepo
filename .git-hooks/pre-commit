@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Allowed branch prefixes and their descriptions
+declare -A BRANCH_PREFIXES
+BRANCH_PREFIXES=(
+  [feature]="New feature in development"
+  [fix]="Bug fix or patch"
+  [chore]="Routine task or maintenance"
+  [docs]="Documentation changes"
+  [test]="Work related to testing"
+  [refactor]="Code restructuring without changing behavior"
+  [poc]="Proof of concept or experimental work"
+)
+
+# Build regex pattern dynamically from allowed prefixes
+PREFIXES_REGEX=$(IFS="|"; echo "${!BRANCH_PREFIXES[*]}")
+BRANCH_REGEX="^(${PREFIXES_REGEX})\/[a-z0-9-]+$"
+
+# Get the current branch name
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+
+if ! echo "$BRANCH_NAME" | grep -Eq "$BRANCH_REGEX"; then
+  echo "❌ Error: The branch name '$BRANCH_NAME' does not follow the naming convention."
+  echo
+  echo "🔹 Expected format: <prefix>/branch-name"
+  echo "🔹 Examples of valid branch names:"
+  echo "   - feature/user-authentication"
+  echo "   - fix/navbar-alignment"
+  echo "   - docs/project-guidelines"
+  echo
+  echo "📌 Allowed branch prefixes:"
+  for key in "${!BRANCH_PREFIXES[@]}"; do
+    printf "  - %-10s → %s\n" "$key" "${BRANCH_PREFIXES[$key]}"
+  done
+  exit 1
+fi
+
+echo "✅ Branch name is valid!"
+exit 0
